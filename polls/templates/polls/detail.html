@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poll</title>
+    <style>
+        #content {
+            display: flex;
+            /* flex-direction: column; */
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            font-size: 24px;
+            color: #333;
+            background-color: #d7fbf6;
+            border: 5px rgb(117, 243, 95) groove;
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(to right, #5a439a, #42961b);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <content id="content">
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+                    <h1>{{ question.question_text }}</h1>
+                </legend>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                {% for choice in question.choice_set.all %}
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                {% endfor %}
+            </fieldset>
+            <input type="submit" value="Vote">
+        </form>
+    </content>
+</body>
+
+</html>
